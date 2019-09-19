@@ -2,71 +2,61 @@
 
 using namespace std;
 
-// deklarasi fungsi pengurutan menggunakan algoritma bubble sort
-int bubbleSort(int data[], int n) {
-
-	// deklarasi variabel untuk iterator
-	int i, j;
-
-	// deklarasi variabel sementara pembantu pengurutan
-	int temp;
-
-	/////////// ALGORITMA BUBBLE SORT
-	for (i = 0; i < n - 1; i++)
-	{
-		for (j = 0; j < (n - i - 1); j++) {
-			if (data[j] > data[j + 1])
-			{
-				temp = data[j];
-				data[j] = data[j + 1];
-				data[j + 1] = temp;
-			}
-		}
-	}
-	/////////// akhir dari ALGORITMA BUBBLE SORT
-	return 0;
-}
-
 // deklarasi fungsi pencarian dengan algoritma binary search
 int binarySearch(int cari, int data[], int n) {
 
+	// deklarasi variabel
 	int awal = 0,
 		tengah,
 		akhir = n,
-		indexKetemu;
+		indexKetemu,
+		ada=0,
+		i;
 
 	tengah = (awal + akhir) / 2;
 
 	while (cari != data[tengah]) {
 
-		for (int i = 0; i < n; i++)
+		for (i = awal; i < akhir; i++)
 		{
 			if (cari==data[i])
 			{
-				indexKetemu = i;
-				if (indexKetemu > tengah)
+				ada = 1;
+				if (i > tengah)
 				{
 					awal = tengah + 1;
 				}
-				else if (indexKetemu < tengah)
+				else if (i < tengah)
 				{
 					akhir = tengah - 1;
 				}
 			}
+			
+		}
+		if (i == n && ada == 0)
+		{
+			break;
 		}
 		tengah = (awal + akhir) / 2;
 	}
 
-	return tengah;
+	if (ada == 1) {
+		indexKetemu = tengah;
+	}
+	else {
+		indexKetemu = NULL;
+	}
+
+	return indexKetemu;
 }
 
 int main()
 {
     // deklarasi array dan variabel
-	int data[20],
-		n,
+	int n,
 		cari,
-		hasil;
+		hasil,
+		data[20];
 
 	// input banyaknya data dari user
 	cout << "Masukkan jumlah data yang anda inginkan : "; cin >> n;
@@ -82,12 +72,18 @@ int main()
 	}
 
 	// input nilai yang ingin dicari
-	cout << "Data yang anda cari : "; cin >> cari;
+	cout << endl << "Data yang anda cari : "; cin >> cari;
 
 	// melakukan pencarian dengan algoritma biary search
 	hasil = binarySearch(cari, data, n);
 
-	cout << cari << " ditemukan pada data ke-" << hasil+1 << endl;
+	if (hasil != 0)
+	{
+		cout << cari << " ditemukan pada data ke-" << hasil + 1 << endl;
+	}
+	else {
+		cout << "Data tidak ditemukan" << endl;
+	}
 
 	return 0;
 }
